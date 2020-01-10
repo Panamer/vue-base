@@ -25,6 +25,14 @@ module.exports = function(env, arg) {
               ]
             },
             {
+              test: /\.styl/,
+              use: [
+                "style-loader",
+                "css-loader",
+                "stylus-loader"
+              ]
+            },
+            {
               test: /\.(jpg|png|gif|bmp|jpeg)$/,
               use: {
                 loader: "url-loader",
