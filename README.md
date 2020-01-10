@@ -1,9 +1,6 @@
-<<<<<<< HEAD
+
 # vue-base
 Vue 从入门到放弃
-=======
-# About
-这是慕课网上[Vue+Webpack打造todo应用](https://www.imooc.com/learn/935)课程的源码
 
 # 使用方法
 ```
@@ -18,4 +15,3 @@ npm install
 npm run dev
 ```
 开始开发项目
->>>>>>> 增加README.md
