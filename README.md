@@ -1,10 +1,6 @@
 
 # vue-base
 Vue 从入门到放弃
-
-# 使用方法
-```
-git clone https://github.com/Jokcy/vue-todo-tech.git
 ```
 进入项目目录，运行
 ```
