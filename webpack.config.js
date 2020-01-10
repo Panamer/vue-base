@@ -2,9 +2,13 @@ const path = require('path');
 const htmlWebpackPlugin = require('html-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
-module.exports = function(env, arg) {
-  return {
-    mode: env.production ? 'production' : 'development',
+const getConfig = (env) => {
+  const isDev = env.development;
+  console.log(isDev);
+
+  const config = {
+    target: "web",
+    mode: isDev ? 'development' : 'production',
     entry: path.resolve(__dirname, "src/index.js"),
     output: {
       filename: "[name].[hash:6].bundle.js",
@@ -53,4 +57,24 @@ module.exports = function(env, arg) {
       new VueLoaderPlugin()
     ]
   }
+
+
+  if (isDev) {
+    config.devServer = {
+      contentBase: path.join(__dirname, "src"),
+      compress: true,
+      color: true,
+      host: "0.0.0.0",
+      port: 8080,
+      overlay: {
+        errors: true
+      }
+    }
+  }
+
+  return config;
+}
+
+module.exports = function(env, arg) {
+  return getConfig(env);
 }
