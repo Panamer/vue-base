@@ -64,7 +64,7 @@ const getConfig = (env) => {
   }
 
   if (isDev) {
-    config.devtool = "#cheap-module-eval-source-map",
+    // config.devtool = "#cheap-module-eval-source-map",
     config.devServer = {
       contentBase: path.join(__dirname, "src/assets"),
       compress: true,
@@ -77,7 +77,10 @@ const getConfig = (env) => {
       hot: true
     };
     config.plugins.push(
-      // new webpack.EvalSourceMapDevToolPlugin(),
+      new webpack.EvalSourceMapDevToolPlugin({
+        filename: "[name].js.map",
+        exclude: ['vendor.js']
+      }),
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NoEmitOnErrorsPlugin()
     )
