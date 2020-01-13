@@ -1,5 +1,6 @@
 const path = require('path');
-const htmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require("clean-webpack-plugin")
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const webpack = require('webpack');
 
@@ -52,7 +53,9 @@ const getConfig = (env) => {
         ]
     },
     plugins: [
-      new htmlWebpackPlugin({
+      new CleanWebpackPlugin(),
+      new HtmlWebpackPlugin({
+        title: "管理输出",
         filename: 'index.html',
         template: path.resolve(__dirname, "./index.html")
       }),
