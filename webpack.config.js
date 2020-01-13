@@ -104,6 +104,15 @@ const getConfig = (env) => {
     );
   } else {
     config.output.filename = "[name].[chunkhash:8].js";
+    config.entry = {
+      app: path.resolve(__dirname, "src/index.js"),
+      vendor: ["vue"]
+    }
+    config.plugins.push(
+      new webpack.optimize.SplitChunksPlugin({
+        name: "vendor"
+      })
+    )
   }
 
   return config;
