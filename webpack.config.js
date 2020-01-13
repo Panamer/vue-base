@@ -2,11 +2,12 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require("clean-webpack-plugin")
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const webpack = require('webpack');
 
 const getConfig = (env) => {
   console.log(env);
-  const isDev = env.development || "production";
+  const isDev = env.development || false;
   console.log(isDev);
 
   const config = {
@@ -25,17 +26,27 @@ const getConfig = (env) => {
               use: "vue-loader"
             },
             {
+              test: /\.jsx$/,
+              use: "babel-loader"
+            },
+            {
               test: /\.css$/,
               use: [
-                "style-loader",
+                isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
                 "css-loader",
               ]
             },
             {
               test: /\.styl/,
               use: [
-                "style-loader",
+                isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
                 "css-loader",
+                {
+                  loader: "postcss-loader",
+                  options: {
+                    sourceMap: true
+                  }
+                },
                 "stylus-loader"
               ]
             },
@@ -57,11 +68,15 @@ const getConfig = (env) => {
       new HtmlWebpackPlugin({
         title: "管理输出",
         filename: 'index.html',
-        template: path.resolve(__dirname, "./index.html")
+        // template: path.resolve(__dirname, "./index.html")
       }),
       new VueLoaderPlugin(),
       new webpack.DefinePlugin({
-        "process.env.NODE_ENV": JSON.stringify(isDev)
+        "process.env.NODE_ENV": isDev ? '"development"' : JSON.stringify('production')
+      }),
+      new MiniCssExtractPlugin({
+        filename: isDev ? '[name].css' : '[name].[hash].css',
+        chunkFilename: isDev ? '[id].css' : '[id].[hash].css',
       })
     ]
   }
@@ -86,7 +101,9 @@ const getConfig = (env) => {
       }),
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NoEmitOnErrorsPlugin()
-    )
+    );
+  } else {
+    config.output.filename = "[name].[chunkhash:8].js";
   }
 
   return config;
