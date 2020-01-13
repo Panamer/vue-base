@@ -63,17 +63,16 @@ const getConfig = (env) => {
     ]
   }
 
-
   if (isDev) {
     config.devServer = {
-      contentBase: path.join(__dirname, "src"),
+      contentBase: path.join(__dirname, "src/assets"),
       compress: true,
-      color: true,
       host: "0.0.0.0",
       port: 8080,
       overlay: {
         errors: true
-      }
+      },
+      open: true
     }
   }
 
