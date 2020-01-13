@@ -1,9 +1,11 @@
 const path = require('path');
 const htmlWebpackPlugin = require('html-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const webpack = require('webpack');
 
 const getConfig = (env) => {
-  const isDev = env.development;
+  console.log(env);
+  const isDev = env.development || "production";
   console.log(isDev);
 
   const config = {
@@ -54,7 +56,10 @@ const getConfig = (env) => {
         filename: 'index.html',
         template: path.resolve(__dirname, "./index.html")
       }),
-      new VueLoaderPlugin()
+      new VueLoaderPlugin(),
+      new webpack.DefinePlugin({
+        "process.env.NODE_ENV": JSON.stringify(isDev)
+      })
     ]
   }
 
