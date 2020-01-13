@@ -99,20 +99,25 @@ const getConfig = (env) => {
         filename: "[name].js.map",
         exclude: ['vendor.js']
       }),
-      new webpack.HotModuleReplacementPlugin(),
-      new webpack.NoEmitOnErrorsPlugin()
+      new webpack.HotModuleReplacementPlugin()
     );
   } else {
     config.output.filename = "[name].[chunkhash:8].js";
     config.entry = {
-      app: path.resolve(__dirname, "src/index.js"),
-      vendor: ["vue"]
+      app: path.resolve(__dirname, "src/index.js")
     }
-    config.plugins.push(
-      new webpack.optimize.SplitChunksPlugin({
-        name: "vendor"
-      })
-    )
+    config.optimization = {
+      splitChunks: {
+        // include all types of chunks
+        chunks: 'all'
+      },
+      runtimeChunk: true
+    }
+    // config.plugins.push(
+    //   new webpack.optimize.SplitChunksPlugin({
+    //     name: "vendor"
+    //   })
+    // )
   }
 
   return config;
