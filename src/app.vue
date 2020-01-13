@@ -1,12 +1,12 @@
 <template>
-    <div class="text">{{text}}</div>
+    <div class="text">{{text}} , 要得</div>
 </template>
 
 <script>
 export default {
     data() {
         return {
-            text: 'dabaojian'
+            text: '朔风刀'
         }
     }
 }
