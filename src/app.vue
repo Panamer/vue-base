@@ -10,10 +10,10 @@ export default {
         }
     }
 }
-<script/>
+</script>
 
 <style scoped>
-.text{
+.text {
     color: #556565;
 }
-</style>
+</style> 
