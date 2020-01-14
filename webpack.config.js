@@ -59,6 +59,11 @@ const getConfig = (env) => {
               use: "babel-loader"
             },
             {
+              test: /\.js$/,
+              use: "babel-loader",
+              exclude: /node_modules/
+            },
+            {
               test: /\.css$/,
               use: [
                 isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
