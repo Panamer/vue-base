@@ -1,9 +1,10 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require("clean-webpack-plugin")
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const webpack = require('webpack');
+const creatVueLoaderOptions = require("./build/vue-loader")
 
 const getConfig = (env) => {
   console.log(env);
@@ -15,7 +16,7 @@ const getConfig = (env) => {
     mode: isDev ? 'development' : 'production',
     entry: path.resolve(__dirname, "src/index.js"),
     output: {
-      filename: "[name].[hash:6].bundle.js",
+      filename: "js/[name].[hash:6].bundle.js",
       sourceMapFilename: "[name]-[chunkhash].map",
       path: path.resolve(__dirname, "dist")
     },
@@ -23,10 +24,17 @@ const getConfig = (env) => {
         rules: [
             {
               test: /\.vue$/,
-              use: "vue-loader"
+              use: {
+                loader: "vue-loader",
+                options: creatVueLoaderOptions(isDev)
+              }
             },
             {
               test: /\.jsx$/,
+              use: "babel-loader",
+            },
+            {
+              test: /\.js$/,
               use: "babel-loader"
             },
             {
@@ -57,7 +65,8 @@ const getConfig = (env) => {
                 // "url-loader?limit=8000"
                 options: {
                   limit: 1024,
-                  name: "[name].[ext]"
+                  name: "[name].[hash:6].[ext]",
+                  outputPath: 'img'
                 }
               }
             },
@@ -75,8 +84,8 @@ const getConfig = (env) => {
         "process.env.NODE_ENV": isDev ? '"development"' : JSON.stringify('production')
       }),
       new MiniCssExtractPlugin({
-        filename: isDev ? '[name].css' : '[name].[hash].css',
-        chunkFilename: isDev ? '[id].css' : '[id].[hash].css',
+        filename: isDev ? '[name].css' : 'css/[name].[hash].css',
+        chunkFilename: isDev ? '[id].css' : 'css/[id].[hash].css',
       })
     ]
   }
@@ -102,7 +111,7 @@ const getConfig = (env) => {
       new webpack.HotModuleReplacementPlugin()
     );
   } else {
-    config.output.filename = "[name].[chunkhash:8].js";
+    config.output.filename = "js/[name].[chunkhash:8].js";
     config.entry = {
       app: path.resolve(__dirname, "src/index.js")
     }
